@@ -264,7 +264,11 @@ By convention current that enters the neuron through an electrode is defined as 
 
 \section{Integrate-and-Fire models}
 
-A neuron typically fires an action potential when its membrane potential reaches a threshold that ranges from $-55$ to $-50$ mV. Neuron models can be simplified and simulations can be accelerated dramatically by excluding the biophysical mechanisms responsible for these action potentials. This is exactly the case for \textbf{Integrate-and-Fire models} (Lapicque 1907) which are dedicated to study purely sub-threshold membrane potential dynamics and action potentials are treated just as binary (all-or-none) events. Firing then occurs whenever the membrane potential reaches a certain value $V_{\text{th}}$ and afterwards $V$ is reset to a value $V_{\text{reset}} < V_{\text{th}}$. The description of sub-threshold dynamics can be done with various levels of rigor. The simplest version of this model ignores all active conductances and model the entire membrane current as a passive leakage term \eqref{IL}, $i_m = \bar{g}_L (V - E_L)$. This is known as the \textbf{leaky integrate-and-fire (LIF) model}. For this particular single-compartment model equation \eqref{single-compartment} simplifies to
+A neuron typically fires an action potential when its membrane potential reaches a threshold that ranges from $-55$ to $-50$ mV. Neuron models can be simplified and simulations can be accelerated dramatically by excluding the biophysical mechanisms responsible for these action potentials. This is exactly the case for \textbf{Integrate-and-Fire models} (Lapicque 1907) which are dedicated to study purely sub-threshold membrane potential dynamics and action potentials are treated just as binary (all-or-none) events. Firing then occurs whenever the membrane potential reaches a certain value $V_{\text{th}}$ and afterwards $V$ is reset to a value $V_{\text{reset}} < V_{\text{th}}$. The description of sub-threshold dynamics can be done with various levels of rigor. 
+
+\subsection{Leaky Integrate-and-Fire}
+
+The simplest version of this model ignores all active conductances and model the entire membrane current as a passive leakage term \eqref{IL}, $i_m = \bar{g}_L (V - E_L)$. This is known as the \textbf{leaky integrate-and-fire (LIF) model}. For this particular single-compartment model equation \eqref{single-compartment} simplifies to
 \begin{equation}\label{LIF}
 \tau_m \frac{d V}{d t} = E_L - V + R_m I_e\,,
 \end{equation}
@@ -274,18 +278,39 @@ where apart from using the leakage current \eqref{IL} we multiplied by $r_m$ whi
 \end{equation}
 In this model $E_L$ corresponds to the resting potential of the cell.
 
-The only dynamical quantity in \eqref{LIF} is the sub-threshold membrane potential $V(t)$. The external current $I_e(t)$ is taken as an already known time-dependent function, meaning that we do not have to model its dynamics too. Except for some simple cases of $I_e(t)$, \eqref{LIF} cannot be solved analytically so we have to rely on numerical methods. In following sub-sections we will discuss one of the few cases where we do can solve \eqref{LIF} analytically, $I_e(t) = I_0 = $ const. and later we will move into more interesting numerical results.
+The only dynamical quantity in \eqref{LIF} is the sub-threshold membrane potential $V(t)$. The external current $I_e(t)$ is taken as an already known time-dependent function, meaning that we do not have to model its dynamics too. Except for some simple cases of $I_e(t)$, \eqref{LIF} cannot be solved analytically so we have to rely on numerical methods. One of the few simple-enough cases to solve \eqref{LIF} analytically is when the external current remains constant $I_e(t) = I_0 = $ const. In this case, the solution is given by an exponential decay regulated by $\tau_m$
+\begin{equation}\label{Iconst}
+V(t) = (V(0) - A) e^{-\frac{t}{\tau_m}} + A \,, \quad A \equiv E_L + R_m I_0\,,
+\end{equation}
 
-Before exploring solutions, however, it is worth mentioning two important quantities \textbf{KG}.
+Since these simple models only describe subthreshold dynamics, the only information they offer about action potentials is the precise time at which they occur. This information is crucial however because it encodes the firing pattern of each neuron which is the main quantity to take into account for information transmission across cells. In order to study these patterns it is useful to introduce the \textbf{interspike interval $t_{\text{isi}}$} and its inverse, the \textbf{firing rate $r_{\text{isi}} = \frac{1}{t_{\text{isi}}}$}. The former is nothing but the time difference between two consecutive spikes and the firing rate encodes the same information but in a frecuency format (Hz).
 
-\paragraph{Constant current}
+\subsection{Adaptation and Refractoriness}
 
-\paragraph{Another interesting solution?}
-\textbf{[GWN from neuromatch?]}
+The LIF model we described so far relies on two separate approximations: simplified description of action potentials and linear (leaky) approximation for the total membrane current. An option to move into more accurate descriptions is to keep omitting details about action potentials but increase the complexity of the membrane current. These generalizations already allow us to include more realistic effects. One of them is \textbf{spike-rate adaptation}, which is the mechanism by which interspike intervals lengthen over time when a constant current is injected into the cell and then settle to a steady-state value. Another biological mechanism neurons exhibit is called \textbf{refractoriness}, which describes the decrease in firing probability  after a previous action potential occurred. This phenomena is divided into two periods. \textbf{Absolute refractory period}: is a certain period of time the neuron cannot fire at all, this happens immediately after an action potential took place. \textbf{Relative refractory period}: after the absolute refractory period took place, firing is possible but initially less likely and after some time the membrane recovers its normal firing probabilities.
 
-\subsection{Generalized Integrate-and-Fire (GIF)}
+Spike-rate adaptation can be modeled by extending the LIF model \eqref{LIF} to include an additional current
+\begin{equation}\label{LIF_sra}
+\tau_m \frac{d V}{d t} = E_L - V - r_m g_{\text{sra}}(V - E_K) + R_m I_e\,.
+\end{equation}
+This spike-rate adaptation current $g_{\text{gsa}}$ is modeled as a $K^+$ conductance which slows any action potential after a previous firing. Equation \eqref{LIF_sra} must be supplemented with \eqref{th_and_reset} and an equation for the time-dependent conductance $g_{\text{sra}}$. It is common to assume it relaxes to zero exponentially with a time constant $\tau_{\text{sra}}$. This is behavior can be obtained as the solution of the equation
+\begin{equation}\label{g_sra}
+\tau_{\text{sra}} \frac{d g_{\text{sra}}}{d t} = - g_{\text{sra}} \quad \Rightarrow \quad g_{\text{sra}}(t) = g_{\text{sra}}(0) e^{- \frac{t}{\tau_{\text{sra}}}}\,.
+\end{equation}
+On top of this, after each spike we increase the conductance by the rule
+\begin{equation}\label{g_sra_increment}
+\text{If} \quad V > V_{\text{th}} \quad \Rightarrow \quad g_{\text{sra}} = g_{\text{sra}} + \Delta g_{\text{sra}}
+\end{equation}
+After repetitive firing the current builds up in a sequence of steps causing the firing rate to adapt!
 
-\textbf{Learn this models, its free parameters and make a simulation out of it.}
+Regarding refractoriness, the simplest way to include an absolute refractory effect in the LIF model is by extending the crossing rule \eqref{th_and_reset} to impose that after each firing the membrane potential clamps to the reset value for a certain time $\tau_{\text{ref}}$. Refractoriness can be included into \eqref{LIF} in a more realistic way by adding an additional conductance like we did to incorporate adaptation. For this effect, however, we need a fast recovery time ($\tau$ small) and larger conductance increment ($\Delta g$ large). The latter basically clamp the voltage to $E_K$ after each firing, mimicking an absolute refractory period. After this, the conductance will decay exponentially fast making firing possible but less likely. When the recovery is completed, normal firing can resume. Finally, yet another way of modeling refractoriness is by promoting $V_{\text{th}}$ to a dynamical variable which raises after each firing and then relax back to its normal value.
+
+\textbf{[Maybe add the full model here including these two modifications to \eqref{LIF} and \eqref{th_and_reset}]}
+
+\subsection{Generalized Integrate-and-Fire}
+
+\textbf{To be continued...}
+
 
 \begin{thebibliography}{9}
 	
