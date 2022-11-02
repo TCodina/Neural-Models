@@ -1,0 +1,302 @@
+
+%--PREAMBLE--
+
+
+\documentclass[titlepage]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+
+%--GEOMETRY--
+
+
+\usepackage{geometry}
+\geometry{a4paper,left=20mm,right=20mm,top=25mm,bottom=25mm}
+\setlength\parindent{0pt} % Elimina sangría de todos los parrafos
+\usepackage{parskip} % Elimina sangría de todos los parrafos
+
+
+%--REFERENCES--
+
+
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks   = true,
+	citecolor    = gray,
+	linkcolor	 = blue    % Change cite, ref and eqref hyperlink colors!
+}
+\usepackage{cite}
+
+
+%--MATH--
+
+
+\usepackage{amsmath,amscd,amsfonts,mathtools,amssymb,mathrsfs} %To use math symbols and all of that
+\usepackage{bm} % To use boldsymbols in math mode
+\usepackage[small,bf,hang]{caption}
+\usepackage{slashed} % The slashed derivative of feynman dyagrams symbol
+
+
+%--TABLES--
+
+
+\usepackage{array}
+\usepackage{multirow}
+\setlength{\arrayrulewidth}{.5mm} % Sets the thickness of the borders of the table. 
+\setlength{\tabcolsep}{18pt} % Change the space between the text and the left/right border of its containing cell is set to 18pt with this command.
+\renewcommand{\arraystretch}{1.5} % Change the height of each row is set to 1.5 relative to its default height. 
+
+
+%--EQUATIONS--
+
+
+\usepackage{breqn}
+
+\renewcommand{\theequation}{\thesection.\arabic{equation}} \csname
+@addtoreset\endcsname{equation}{section} % Format of equation numbering
+
+
+%--COLORS--
+
+
+\usepackage[most]{tcolorbox}
+\usepackage{color}
+
+
+%--FONTS--
+
+
+\usepackage{bookman} % The best font ever
+\usepackage{bm} 
+
+
+%--SIMBOLS--
+
+
+\usepackage{marvosym}
+
+
+%--BOXES--
+
+
+% Simple box for equations
+
+\newtcolorbox{boxquationinterior}{colback=white,colframe=black,boxrule=1pt} 
+
+\newenvironment{boxquation}{\vspace{.4cm}
+\begin{boxquationinterior}
+}
+{\end{boxquationinterior} \vspace{.4cm}
+}
+
+% Another box for equations
+
+\newtcolorbox{equbox}{
+	arc = 4pt,
+	outer arc = 4pt,
+	boxrule=1pt,
+	colback=white,
+	boxsep = 2pt,
+	left = 3pt,
+	right = 3pt,
+	width=.8\textwidth,
+	colframe = black}
+
+\newenvironment{equ}{\begin{center}\begin{equbox} \large \centering}{ \end{equbox}\end{center}}
+
+% Una caja que contiene a muchas como casos particulares. Tiene 2 parametros, el color y el titulo
+
+\newtcolorbox{colorcajas}[3][]
+{
+	colframe = #2!25,
+	colback  = #2!10,
+	coltitle = #2!20!black,  
+	title    = #3,
+	#1,
+} 
+
+% Another simple box
+
+\newtcolorbox{capbox}{colback=white,colframe=black, colbacktitle = white,
+	coltitle = black,title=Resumen,fonttitle = \Large , center title}  
+
+\newenvironment{capsumen}{\vfill \begin{capbox}}{\end{capbox}}
+
+
+%--SECTIONS AND TABLE OF CONTENT--
+
+
+\usepackage{titlesec} % Allows creating custom \section's\usepackage{url}
+\usepackage{tocloft}
+\usepackage{setspace}
+
+% Table of contents
+
+\renewcommand\cfttoctitlefont{\hfill\Large\bfseries}
+\renewcommand\cftaftertoctitle{\hfill\mbox{}}
+\renewcommand{\cftpartfont}{\bfseries \hypersetup{linkcolor=black}} % change hyperlink color and font
+\renewcommand{\cftsecfont}{\bfseries \hypersetup{linkcolor=black}}
+\renewcommand{\cftsubsecfont}{\hypersetup{linkcolor=black}}
+\cftsetindents{part}{0em}{2em}
+\cftsetindents{section}{2em}{1.5em}
+\cftsetindents{subsection}{3em}{2.5em}
+\setcounter{tocdepth}{3}
+
+% Sections
+
+\titleformat{\part}[hang]{\bfseries \Huge \setstretch{0.1}}
+{}
+{0pt}
+{
+	\newpage
+	\vspace*{0cm}
+	\textcolor{gray}{ \Large{Capítulo \thepart}}
+	\vspace*{.2cm}
+	\newline
+	\rule{\textwidth}{.5pt}
+	\vspace{.5cm}
+	\newline
+}
+{}
+\titlespacing{\part}{0em}{0cm}{0cm}
+
+\titleformat{\section}[hang]{\Large\bfseries \setstretch{0.1}}{}{0pt}{\color{teal!60!black} \Large \thesection \hspace{5pt}}
+\titlespacing{\section}{0em}{1cm}{1cm}
+
+\titleformat{\subsection}[hang]{\large\sffamily\bfseries}{}{0pt}{ \color{teal!60!white}\large \thesubsection \hspace{5pt}}
+
+\titleformat{\subsubsection}[hang]{\normalsize\sffamily\bfseries\color{black!60!white}}{}{2pt}{\normalsize \thesubsubsection \hspace{10pt}}
+
+\titleformat{\paragraph}[hang]{\normalsize\sffamily\bfseries}{}{0pt}{}
+
+\makeatother
+
+
+%--PAGE STYLE--
+
+
+\usepackage{fancyhdr}
+\fancyhf{}
+%\pagestyle{fancy}
+%\fancyfoot{}
+%\rfoot{\thepage}
+\renewcommand{\sectionmark}[1]{ \markright{#1}{} }  % print the section and chapter without the number and uppercase.
+\renewcommand{\subsectionmark}[1]{} % print up to section in header, not subsection,etc.
+\renewcommand{\headrulewidth}{0pt} % modify the rule behind the header.
+
+% Add the following lines below begin{document} to use the fancy style
+%\renewcommand{\headrulewidth}{1pt}
+%\pagestyle{fancy}{\rhead{\color{brown!60!black}{\Large\Coffeecup}}}
+%\rfoot{\thepage}
+%\thispagestyle{fancy}
+
+
+%--TITLE--
+
+
+%--MACROS AND COMMANDS--
+
+
+
+
+%--DOCUMENT--
+
+
+\begin{document}
+\renewcommand{\headrulewidth}{1pt}
+\pagestyle{fancy}{\rhead{\color{brown!60!black}{\Large\Coffeecup}}}
+\rfoot{\thepage}
+\thispagestyle{fancy}
+
+\textit{“You keep on learning and learning, and pretty soon you learn something no one has learned before.”}
+	 
+\hfill \textit{― Richard Feynman}
+
+\section{Introduction}
+
+Neural models range from highly detailed to very simplified descriptions. The level of complexity of them depends on the specific scale at which we want to study the biological system. In this notes we will deal with single-compartment models where we treat the whole neuron as a point-like object and leave aside all space variability across neurites and soma.
+
+\subsection{Electrical properties of intracellular medium}
+
+The intracellular medium of neurons has a huge number of ions and molecules, which are separated from the extracellular medium by the neuron membrane. Since the concentration of these charged particles is not even across the cell, the membrane acquires a non-zero potential at rest. Moreover, due to the action of ion-channels, these particles can be exchanged between inside and outside the neuron which produces changes in the membranes voltage. These membrane potentials are not uniform across the neuron, but they can take different values in different places. This difference in voltage produce ions to flow \textit{inside} the neuron which leads to the so called \textbf{longitudinal current $I_L$} and the intracellular medium provides a resistance to such flow known as \textbf{longitudinal resistance $R_L$}. These features allow us to model neurites as cables, and so the aforementioned quantities are related via Ohm's law
+\begin{equation}\label{OhmRL}
+V_2 - V_1 = I_L R_L\,,
+\end{equation}
+where $V_2$ and $V_1$ are two voltage at the extremes of the cable. The longitudinal resistance is well modeled by
+\begin{equation}\label{RL}
+R_L = r_L \frac{L}{\pi a^2}\,,
+\end{equation}
+which tells us that $R_L$ is proportional to the length of the segment $L$ and inversely proportional to its area $\pi a^2$. The constant of proportionality is called the \textbf{intracellular resistivity $r_L$}. As a consequence of \eqref{RL} we get that the resistance is higher for long and narrow dedritic or axonal cables. Neurons that have few of these high-resistance neurites may have relatively uniform membrane potentials across their surfaces (see \eqref{OhmRL}). Such neurons are dubbed \textbf{electronically compact} and they can be entirely described by a single membrane potential. In these notes we will deal with models for this kind of neurons leaving aside any space variability along the membrane!
+
+\subsection{Electrical properties of the membrane}
+
+As we mentioned before, ions are blocked inside the cell by the neuron membrane. Due to this charge-separating feature, it acts effectively as a capacitor creating the so called \textbf{membrane capacitance $C_m$}. The amount of excess charge $Q$ is related to the membrane potential via the capacitor equation
+\begin{equation}\label{Cm}
+Q = C_m V\,,
+\end{equation}
+where $V$ is the voltage across the membrane. $C_m$ is proportional to the area of the membrane $A$ and the constant of proportionality is called \textbf{specific membrane capacitance $c_m$}, $C_m = c_m A$. In the same way the intracellular medium provides a resistance $R_L$ for ions flowing inside the cell, the cell membrane provides a \textbf{membrane resistance $R_m$} for these charges particles moving across the neuron. $R_m$ is inversely proportional to the membrane area $R_m = \frac{r_m}{A}$ with $r_m$ the \textbf{specific membrane resistance}. The product
+\begin{equation}\label{tm}
+R_m C_m = r_m c_m \equiv \tau_m
+\end{equation} 
+has units of time and is known as the \textbf{membrane time constant}, it sets the basic time scale for changes in the membrane potential. In principle the membrane is essentially impermeable, which can be associated with an infinite membrane resistance or, equivalently, zero membrane conductance. However, the membrane is not fully impermeable but it contains several ion-channels which allow the interchange of particles. This lowers the effective membrane resistance, which ultimately depends on the density and type of ion-channels. The total flow of charged particles across all these channels defines the \textbf{membrane current $I_m$}, which is related to the \textbf{membrane current per unit area $i_m$} by $I_m = i_m A$. This current can be related to the current flowing across each different channel type. Labeling each type with an $i$ subscript, the membrane current per unit area due to the type $i$ channels is given by $g_i (V - E_i)$, where $g_i$ is the channel \textbf{conductance per unit area}, $E_i$ its reversal potential and $(V - E_i)$ the driving force. Summing these currents over all different types of channels we obtain the total membrane current per unit area
+\begin{equation}\label{im}
+i_m = \sum_{i} g_i (V - E_i)\,.
+\end{equation}
+In general, the membrane conductances $g_i$ are far from being static objects. They usually change over time and they depend on many factors like current membrane potential $V$, intracellular messengers and extracellular neurotransmitters or neuromodulators. The currents carried by ion-pumps also contribute to the variability of the membrane conductance. Even though much of the complexity and richness of neuronal dynamics come from these variations, some of the factors that contribute to the total membrane current can be modeled as relatively constant. These time-independent contributions are lumped together into what is called \textbf{leakage current}
+\begin{equation}\label{IL}
+i_L = \bar{g}_L (V - E_L)\,.
+\end{equation}
+In this approximation, $E_L$ and $\bar{g}_L$\footnote{The bar on top of this quantity is used to indicate it has a constant value. The same notation will be used later for other quantities.} usually do not correspond with any specific ion channel but they have to be kept as free parameters and fixed later depending the cell we are modeling. The leakage conductance $\bar{g}_L$ is called passive, while the variable conductances are termed active.
+
+\subsection{Single-Compartment models}
+
+Models that describe the membrane potential of a neuron by a single variable $V$ are called \textbf{single-compartment models}. These models do not capture spatial variability in the membrane potential, which is the job of \textbf{multi-compartment models}. The basic equation for single-compartment models is obtained by differentiating \eqref{Cm} w.r.t. time
+\begin{equation}\label{dVdQ}
+C_m \frac{d V}{d t} = \frac{d Q}{d t}\,.
+\end{equation}
+Equation \eqref{dVdQ} describes the change of membrane potential due to the flow of charges \textit{across the membrane}. This rate at which charge builds up inside the cell is nothing but the amount of current entering the neuron. This current is the combination of the membrane current \eqref{im} (due to all ion channels and synaptic conductances) and possible external currents injected into the cell through an electrode $I_e$. Diving by the membrane area we arrive at the basic equation for all single-compartment models
+\begin{equation}\label{single-compartment}
+c_m \frac{d V}{d t} = - i_m + \frac{I_e}{A}\,.
+\end{equation}
+By convention current that enters the neuron through an electrode is defined as positive-inward while $I_m$ is positive-outward. This is the reason for the different signs in \eqref{single-compartment}. The membrane current in \eqref{single-compartment} is nothing but \eqref{im}. The system of equations must be completed with additional equations for the conductances $g_i$ because they usually vary in time. The structure of this model is the same as an electrical circuit, which is called the \textbf{equivalent circuit}. Such circuit contains a capacitor $c_m$, several sources $E_i$ and voltage-dependent conductances $g_i$.
+
+
+\section{Integrate-and-Fire models}
+
+A neuron typically fires an action potential when its membrane potential reaches a threshold that ranges from $-55$ to $-50$ mV. Neuron models can be simplified and simulations can be accelerated dramatically by excluding the biophysical mechanisms responsible for these action potentials. This is exactly the case for \textbf{Integrate-and-Fire models} (Lapicque 1907) which are dedicated to study purely sub-threshold membrane potential dynamics and action potentials are treated just as binary (all-or-none) events. Firing then occurs whenever the membrane potential reaches a certain value $V_{\text{th}}$ and afterwards $V$ is reset to a value $V_{\text{reset}} < V_{\text{th}}$. The description of sub-threshold dynamics can be done with various levels of rigor. The simplest version of this model ignores all active conductances and model the entire membrane current as a passive leakage term \eqref{IL}, $i_m = \bar{g}_L (V - E_L)$. This is known as the \textbf{leaky integrate-and-fire (LIF) model}. For this particular single-compartment model equation \eqref{single-compartment} simplifies to
+\begin{equation}\label{LIF}
+\tau_m \frac{d V}{d t} = E_L - V + R_m I_e\,,
+\end{equation}
+where apart from using the leakage current \eqref{IL} we multiplied by $r_m$ which in this case coincides with $r_m = \frac{1}{\bar{g}_L}$. Equation \eqref{LIF} needs to be supplemented with the threshold and reset rules 
+\begin{equation}\label{th_and_reset}
+\text{If} \quad V > V_{\text{th}} \quad \Rightarrow \quad \text{fire} \quad \Rightarrow \quad V = V_{\text{reset}}\,.
+\end{equation}
+In this model $E_L$ corresponds to the resting potential of the cell.
+
+The only dynamical quantity in \eqref{LIF} is the sub-threshold membrane potential $V(t)$. The external current $I_e(t)$ is taken as an already known time-dependent function, meaning that we do not have to model its dynamics too. Except for some simple cases of $I_e(t)$, \eqref{LIF} cannot be solved analytically so we have to rely on numerical methods. In following sub-sections we will discuss one of the few cases where we do can solve \eqref{LIF} analytically, $I_e(t) = I_0 = $ const. and later we will move into more interesting numerical results.
+
+Before exploring solutions, however, it is worth mentioning two important quantities \textbf{KG}.
+
+\paragraph{Constant current}
+
+\paragraph{Another interesting solution?}
+\textbf{[GWN from neuromatch?]}
+
+\subsection{Generalized Integrate-and-Fire (GIF)}
+
+\textbf{Learn this models, its free parameters and make a simulation out of it.}
+
+\begin{thebibliography}{9}
+	
+	\bibitem{NeuroTheoBook}
+	
+	Theoretical Neuroscience: Computational and Mathematical Modeling of Neural Systems - Laurence F. Abbott, Peter Dayan - MIT Press, 2005.
+	
+	\bibitem{NMA}
+	
+	\href{https://compneuro.neuromatch.io/tutorials/W2D3_BiologicalNeuronModels/student/W2D3_Tutorial1.html}{Neuromatch Academy}
+	
+\end{thebibliography}
+
+\end{document}
